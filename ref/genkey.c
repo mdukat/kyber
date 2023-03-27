@@ -3,14 +3,26 @@
 #include <string.h>
 #include "kem.h"
 
-static void save_keys(char* filename, uint8_t pk[CRYPTO_PUBLICKEYBYTES], uint8_t sk[CRYPTO_SECRETKEYBYTES])
+int main(int argc, char* argv[])
 {
+	// TODO proper args handling
+	if(argc != 2) {
+		printf("usage: %s <keyname>\n", argv[0]);
+		return 1;
+	}
+
+	uint8_t pk[CRYPTO_PUBLICKEYBYTES];
+	uint8_t sk[CRYPTO_SECRETKEYBYTES];
+	crypto_kem_keypair(pk, sk);
+
 	FILE *f_pk, *f_sk;
 	char pkfilename[strlen(filename)+5];
 
 	// prepare public key filename
 	strcpy(pkfilename, filename);
 	strcat(pkfilename, ".pub");
+
+	// TODO check if files exist
 	
 	// save public key
 	f_pk = fopen(pkfilename, "w");
@@ -37,21 +49,6 @@ static void save_keys(char* filename, uint8_t pk[CRYPTO_PUBLICKEYBYTES], uint8_t
 		return;
 	}
 	fclose(f_sk);
-}
-
-int main(int argc, char* argv[])
-{
-	// TODO proper args handling
-	if(argc != 2) {
-		printf("usage: %s <keyname>\n", argv[0]);
-		return 1;
-	}
-
-	uint8_t pk[CRYPTO_PUBLICKEYBYTES];
-	uint8_t sk[CRYPTO_SECRETKEYBYTES];
-	crypto_kem_keypair(pk, sk);
-
-	save_keys(argv[1], pk, sk);
 
 	return 0;
 }
