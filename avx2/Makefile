@@ -103,6 +103,9 @@ test_kyber768: $(SOURCESKECCAK) $(HEADERSKECCAK) test_kyber.c randombytes.c
 test_kyber1024: $(SOURCESKECCAK) $(HEADERSKECCAK) test_kyber.c randombytes.c
 	$(CC) $(CFLAGS) -DKYBER_K=4 $(SOURCESKECCAK) randombytes.c test_kyber.c -o test_kyber1024
 
+kyber-genkey: $(SOURCESKECCAK) $(HEADERSKECCAK) genkey.c randombytes.c
+	$(CC) $(CFLAGS) -DKYBER_K=4 $(SOURCESKECCAK) randombytes.c genkey.c -o kyber-genkey
+
 test_kex512: $(SOURCESKECCAK) $(HEADERSKECCAK) test_kex.c randombytes.c kex.c kex.h
 	$(CC) $(CFLAGS) -DKYBER_K=2 $(SOURCESKECCAK) randombytes.c kex.c test_kex.c -o test_kex512
 
@@ -180,6 +183,7 @@ clean:
 	-$(RM) -rf test_kyber512
 	-$(RM) -rf test_kyber768
 	-$(RM) -rf test_kyber1024
+	-$(RM) -rf kyber-genkey
 	-$(RM) -rf test_kex512
 	-$(RM) -rf test_kex768
 	-$(RM) -rf test_kex1024
